@@ -1,6 +1,9 @@
-# Use pyOCD to read data via an ST-Link from a microcontroller.
-# https://github.com/mbedmicro/pyOCD/blob/master/docs/api_examples.md
+# This is the simplest example, a console app, to read live-data and print it to the console.
+# It demonstrates the use of pyOCD for data access and for parsing an ELF file to get a symbol's address.
+# Blink.elf is a firmware file that runs on an STM32F4 board.
+# This example is derived from https://github.com/mbedmicro/pyOCD/blob/master/docs/api_examples.md
 
+# Requires a pip install pyocd
 from pyocd.core.helpers import ConnectHelper  # for ST-Link connection.
 from pyocd.debug.elf.symbols import ELFSymbolProvider  # for ELF file symbol lookup.
 import time # for sleep.
@@ -22,6 +25,7 @@ print("uwTick at address: 0x{0:08X}".format(tick_addr))
 
 # Read uwTick and expect it to return a changing tick count.
 # It should change roughly 1000 msec each time by virtue of the sleep(1).
+# Just loop 10 times while sleeping 1 second and print the millisecond-counter.
 for i in range(1, 10):
     val = target.read32(tick_addr)
     print(val)
