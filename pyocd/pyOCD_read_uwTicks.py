@@ -12,16 +12,18 @@ session = ConnectHelper.session_with_chosen_probe(
     return_first=True,      # Assuming that 1 board is attached. Or, we just use the first one.
     connect_mode='attach')  # This will keep the target running. default is 'halt' in which case target.resume() should be called.
 
-session.open()
-
 target = session.board.target
 
 target.elf = "./Blink.elf" # Set ELF file on target.
+
 
 # Look up address of "uwTick", the millisecond counter in firmware.
 provider = ELFSymbolProvider(target.elf)
 tick_addr = provider.get_symbol_value("uwTick")
 print("uwTick at address: 0x{0:08X}".format(tick_addr))
+
+session.open()
+
 
 # Read uwTick and expect it to return a changing tick count.
 # It should change roughly 1000 msec each time by virtue of the sleep(1).
